@@ -1,4 +1,31 @@
-Re: Validation Request under 15 U.S.C. §1692g and Pay-for-Delete Negotiation
+{{ party.defendant_name }}
+{{ party.defendant_addr }}
+{% if party.email and party.email != "[optional]" %}Email: {{ party.email }}
+{% endif %}{% if party.phone and party.phone != "[optional]" %}Phone: {{ party.phone }}
+{% endif %}
+{{ date }}
 
-Please provide: (1) original contract/authority, (2) full itemization, (3) proof of assignment, (4) DOFD reported to CRAs, (5) collector license.
-Cease phone contact. Upon validation, I’m prepared to resolve on a written Pay-for-Delete basis at {{ pct }}% (${{ amount }}).
+Via Certified Mail
+{{ to_address }}
+
+Subject: Validation Request & Pay-for-Delete Negotiation – {{ account_reference }}
+
+Dear Collections Manager:
+
+Pursuant to 15 U.S.C. § 1692g, please provide the following documentation substantiating the alleged
+balance and your authority to collect: (1) the original contract or account-level agreement; (2) a full
+itemization from charge-off through the present; (3) documentation of assignment or ownership; (4) the
+Date of First Delinquency reported to each credit bureau; and (5) proof of any required state collection
+license.
+
+Until validation is complete, please cease telephone communications and limit correspondence to writing.
+Subject to timely validation, I am prepared to resolve this matter on a written pay-for-delete basis at {{ pct }}%
+(${{ amount }}). The agreement must include deletion of the tradeline from all credit reporting agencies
+within 30 days of confirmed payment.
+
+Please acknowledge receipt of this request within 30 days and confirm the address for remitting any agreed
+payment. I appreciate your cooperation in resolving this matter professionally.
+
+Sincerely,
+
+{{ party.defendant_name }}

@@ -12,10 +12,12 @@ def load(yaml_path):
         return yaml.load(f)
 
 def jenv():
-    return Environment(
+    env = Environment(
         loader=FileSystemLoader("templates"),
         autoescape=select_autoescape()
     )
+    env.globals["fmt_money"] = fmt_money
+    return env
 
 def write_docx(text, outpath):
     doc = Document()
@@ -103,13 +105,16 @@ def letters(cfg):
         write_docx(text, os.path.join(out_dir, fn))
 
     # §611 MOV to bureaus (duplicate JPMCB *4978)
-    mov = env.get_template("frca_611_mov.j2").render(**plan, date=today)
     for bureau in plan["mailing"]["bureaus"]:
+        ctx = {**plan, "date": today, "to_address": bureau}
+        text = env.get_template("frca_611_mov.j2").render(**ctx)
         fn = f'Bureaus_§611_MOV_JPMCB4978_{today}_{bureau.split(",")[0].replace(" ", "")}.docx'
-        write_docx(mov, os.path.join(out_dir, fn))
+        write_docx(text, os.path.join(out_dir, fn))
 
     # §623 direct dispute to Chase
-    text = env.get_template("frca_623_direct.j2").render(**plan, date=today)
+    text = env.get_template("frca_623_direct.j2").render(
+        **plan, date=today, to_address=plan["mailing"]["chase_furnisher"]
+    )
     fn = f"Chase_§623_DirectDispute_DuplicateTradeline_{today}.docx"
     write_docx(text, os.path.join(out_dir, fn))
 
@@ -118,7 +123,9 @@ def letters(cfg):
     for i, pct in enumerate(plan["offers"]["scs_comed"], start=1):
         ctx = {
             **plan, "date": today, "pct": pct,
-            "amount": fmt_money(compute_amount(facts["scs_comed_balance"], pct))
+            "amount": fmt_money(compute_amount(facts["scs_comed_balance"], pct)),
+            "to_address": plan["mailing"]["scs"][0],
+            "account_reference": f"Southwest Credit Systems – ComEd Balance ${fmt_money(facts['scs_comed_balance'])}"
         }
         text = env.get_template("fdCPA_1692g_pfd.j2").render(**ctx)
         fn = f"SCS_ComEd_Validation_PFD_{today}_Wave{i}.docx"
@@ -128,7 +135,9 @@ def letters(cfg):
     for i, pct in enumerate(plan["offers"]["credit_collections_prog"], start=1):
         ctx = {
             **plan, "date": today, "pct": pct,
-            "amount": fmt_money(compute_amount(facts["credit_collections_prog_balance"], pct))
+            "amount": fmt_money(compute_amount(facts["credit_collections_prog_balance"], pct)),
+            "to_address": plan["mailing"]["credit_collections"][0],
+            "account_reference": f"Credit Collection Services – Progressive Balance ${fmt_money(facts['credit_collections_prog_balance'])}"
         }
         text = env.get_template("fdCPA_1692g_pfd.j2").render(**ctx)
         fn = f"CreditCollections_Progressive_Validation_PFD_{today}_Wave{i}.docx"

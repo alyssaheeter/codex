@@ -1,6 +1,37 @@
-… MOTION TO STRIKE OR DISREGARD AFFIDAVIT PORTIONS …
+IN THE {{ court.jurisdiction|upper }} {{ court.court_name|upper }}
+CAUSE NO. {{ court.cause_no }}
 
-Grounds: (1) internal contradiction on last-payment date/amount; (2) hearsay and lack of proper foundation for business
-records; (3) no itemization of fees/interest from charge-off to present; (4) absence of complete monthly statements.
+JPMORGAN CHASE BANK, N.A.                )
+      Plaintiff,                          )
+v.                                        )
+{{ party.defendant_name|upper }},         )
+      Defendant.                          )
 
-Relief: strike contradictory paragraphs; disregard balance assertions lacking itemization; order production of pp. 1–49 statements.
+DEFENDANT’S MOTION TO STRIKE OR DISREGARD AFFIDAVIT PORTIONS
+
+Defendant {{ party.defendant_name }} moves the Court, pursuant to Trial Rule 56(E) and the Rules of Evidence, to
+strike or disregard the deficient portions of Plaintiff’s affidavit and supporting designations.
+
+1. Internal Contradiction. The affidavit conflicts with Plaintiff’s own memorandum regarding the alleged last
+   payment, swearing to ${{ fmt_money(facts.chase_last_payment_affidavit.amount) }} on {{ facts.chase_last_payment_affidavit.date }} while the
+   memorandum asserts ${{ fmt_money(facts.chase_last_payment_memo.amount) }} on {{ facts.chase_last_payment_memo.date }}. The contradiction
+   renders the affiant’s testimony unreliable.
+
+2. Hearsay and Lack of Foundation. The affiant offers business-record conclusions without laying the
+   requisite foundation or attaching the referenced records. Trial Rule 56(E) requires personal knowledge and
+   admissible evidence, which are lacking here.
+
+3. Missing Itemization and Statements. The affidavit references “Periodic Billing Statements (pp. 1–49)” yet
+   fails to attach the full statements or itemize the balance from charge-off to present. Without complete
+   records, the balance testimony is conclusory.
+
+Relief Requested. Defendant requests that the Court strike the contradictory paragraphs, disregard any balance
+assertions lacking itemization or foundation, and order production of the complete page 1–49 statement set
+prior to any renewed dispositive motion.
+
+Dated: {{ now }}
+
+Respectfully submitted,
+
+{{ party.defendant_name }}
+{{ party.defendant_addr }}

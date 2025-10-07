@@ -1,15 +1,35 @@
-{{ date }} 
+{{ party.defendant_name }}
+{{ party.defendant_addr }}
+{% if party.email and party.email != "[optional]" %}Email: {{ party.email }}
+{% endif %}{% if party.phone and party.phone != "[optional]" %}Phone: {{ party.phone }}
+{% endif %}
+{{ date }}
 
-Via Email & Certified Mail
+Via Certified Mail & Email
 {{ to_address }}
 
-Re: Settlement Offer (No admission) – {{ name }} – Balance ${{ balance }}
+Subject: Settlement Proposal – {{ name }} (Balance ${{ balance }})
 
-Wave-{{ wave }} offer: {{ pct }}% = ${{ amount }} lump-sum for (i) dismissal with prejudice (if in suit), 
-(ii) each side bears fees/costs, (iii) no post–charge-off interest or fees, (iv) furnish “settled” within 30 days,
-(v) no resale of remainder; written agreement required before any payment.
+Dear Counsel:
 
-Hardship summary attached.
+I appreciate your attention to the pending {{ name }} matter. I am writing to propose an amicable
+resolution that acknowledges the documented financial hardship I am experiencing while allowing both
+parties to avoid continued litigation risk and expense.
+
+For Wave {{ wave }}, I can tender {{ pct }}% of the outstanding balance, which equals ${{ amount }}, as a
+single lump-sum payment. Acceptance of this offer is contingent upon the following standard terms:
+
+1. Full dismissal with prejudice (where litigation is pending) and mutual release of claims.
+2. Each party bears its own attorney fees, costs, and expenses.
+3. No post–charge-off interest, late fees, or other add-ons will be pursued or reported.
+4. The account will be reported to all credit bureaus as “settled in full” within 30 days of payment.
+5. The remaining balance will not be sold, reassigned, or collected by any third party.
+
+Please confirm acceptance in writing so we may finalize a settlement agreement and payment logistics.
+For ease of review, I have attached my hardship declaration outlining the circumstances driving this proposal.
+
+Thank you for your consideration. I look forward to resolving this matter cooperatively.
 
 Sincerely,
+
 {{ party.defendant_name }}

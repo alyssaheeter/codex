@@ -9,16 +9,26 @@ v.                                        )
 
 DEFENDANT’S OPPOSITION TO PLAINTIFF’S MOTION FOR SUMMARY JUDGMENT
 
-Defendant opposes Summary Judgment. A genuine dispute of material fact exists because
-Plaintiff’s own designated materials conflict on the “last payment” (Memo asserts ${{ facts.chase_last_payment_memo.amount }}
-on {{ facts.chase_last_payment_memo.date }}; Affidavit swears ${{ facts.chase_last_payment_affidavit.amount }} on {{ facts.chase_last_payment_affidavit.date }}),
-defeating account-stated as a matter of law. Plaintiff also failed to itemize the balance and to produce the full run of
-statements despite designating “Periodic Billing Statements (pp. 1–49).”
+Defendant {{ party.defendant_name }} respectfully submits this memorandum in opposition to Plaintiff’s Motion for
+Summary Judgment. Genuine disputes of material fact and procedural defects require denial of the motion.
 
-Requested relief: deny Summary Judgment; alternatively, defer under Rule 56 to compel complete statements and
-itemization; set for trial.
+1. Conflicting Evidence on the Alleged “Last Payment.” Plaintiff’s own designated materials conflict on the
+   purported last payment, creating a dispute for trial. The Plaintiff’s Memo asserts a ${{ fmt_money(facts.chase_last_payment_memo.amount) }}
+   payment on {{ facts.chase_last_payment_memo.date }}, while the supporting affidavit swears the last payment
+   was ${{ fmt_money(facts.chase_last_payment_affidavit.amount) }} on {{ facts.chase_last_payment_affidavit.date }}. These contradictions
+   defeat the account-stated theory as a matter of law and preclude summary judgment.
+
+2. Absence of Itemization and Complete Statements. Plaintiff fails to itemize the balance or provide the full run
+   of periodic statements despite designating “Periodic Billing Statements (pp. 1–49).” Without a complete
+   accounting, the Court cannot assess the claimed balance or the legality of fees and interest.
+
+Requested Relief. Defendant asks the Court to deny the Motion for Summary Judgment. In the alternative,
+Defendant requests that the Court defer ruling under Trial Rule 56 to compel production of the complete
+statements and a detailed itemization, and to set the matter for trial following supplementation.
 
 Dated: {{ now }}
+
+Respectfully submitted,
 
 {{ party.defendant_name }}
 {{ party.defendant_addr }}
