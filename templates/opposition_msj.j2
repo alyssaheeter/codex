@@ -1,0 +1,24 @@
+IN THE {{ court.jurisdiction|upper }} {{ court.court_name|upper }}
+CAUSE NO. {{ court.cause_no }}
+
+JPMORGAN CHASE BANK, N.A.                )
+      Plaintiff,                          )
+v.                                        )
+{{ party.defendant_name|upper }},         )
+      Defendant.                          )
+
+DEFENDANT’S OPPOSITION TO PLAINTIFF’S MOTION FOR SUMMARY JUDGMENT
+
+Defendant opposes Summary Judgment. A genuine dispute of material fact exists because
+Plaintiff’s own designated materials conflict on the “last payment” (Memo asserts ${{ facts.chase_last_payment_memo.amount }}
+on {{ facts.chase_last_payment_memo.date }}; Affidavit swears ${{ facts.chase_last_payment_affidavit.amount }} on {{ facts.chase_last_payment_affidavit.date }}),
+defeating account-stated as a matter of law. Plaintiff also failed to itemize the balance and to produce the full run of
+statements despite designating “Periodic Billing Statements (pp. 1–49).”
+
+Requested relief: deny Summary Judgment; alternatively, defer under Rule 56 to compel complete statements and
+itemization; set for trial.
+
+Dated: {{ now }}
+
+{{ party.defendant_name }}
+{{ party.defendant_addr }}
