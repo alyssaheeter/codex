@@ -1,0 +1,62 @@
+tz: America/Chicago
+
+# DUE DATES (YYYY-MM-DD)
+deadlines:
+  oppose_msj: 2025-10-09
+  mov_bureaus_623: 2025-10-10
+  fdcpas: 2025-10-13
+  rebuild_day45: 2025-11-22
+
+# CASE + COURT
+court:
+  cause_no: "45D03-2504-CC-003807"
+  court_name: "Lake Superior Court, Civil Division 3"
+  jurisdiction: "Lake County, Indiana"
+  efile_service_for_plaintiff: "Blitt & Gaines, P.C., 775 Corporate Woods Pkwy, Vernon Hills, IL 60061"
+
+party:
+  defendant_name: "Alyssa C. Heeter"
+  defendant_addr: "[Your PO Box / safe address]"
+  email: "[optional]"
+  phone: "[optional]"
+
+# FACTS used in filings (pulled from your reports/pleadings)
+facts:
+  chase_balance_4155: 7774.65
+  chase_last_payment_memo: {date: "2024-08-16", amount: 226.00}   # Memo says 8/16/24 $226
+  chase_last_payment_affidavit: {date: "2024-05-16", amount: 230.00} # Affidavit says 5/16/24 $230
+  jpmcb_4978_balance: 2754
+  jpmcb_4978_dofd: "2024-07-19"
+  jpmcb_4978_cl: 2300
+  jpmcb_4978_high: 13065
+  chase_4155_cl: 6300
+  amex_balance: 3013
+  bofa_balance: 6653
+  scs_comed_balance: 3477
+  credit_collections_prog_balance: 119
+  nordstrom_td_open: true
+
+# ADDRESSES
+mailing:
+  plaintiff_counsel: "Blitt & Gaines, P.C., 775 Corporate Woods Pkwy, Vernon Hills, IL 60061"
+  chase_furnisher: "JPMorgan Chase Bank, N.A., PO Box 15369, Wilmington, DE 19850"
+  bureaus:
+    - "Equifax, PO Box 740241, Atlanta, GA 30374"
+    - "TransUnion, PO Box 2000, Chester, PA 19016"
+    - "Experian, PO Box 4500, Allen, TX 75013"
+  scs:
+    - "Southwest Credit Systems, 4120 International Pkwy, Carrollton, TX 75007"
+  credit_collections:
+    - "Credit Collection Services, 725 Canton St, Norwood, MA 02062"
+
+# OFFER LADDERS (percent)
+offers:
+  chase_4155: [30, 37, 45]
+  jpmcb_4978: [20, 30, 40]
+  amex: [25, 33, 45]
+  bofa: [20, 30, 42]
+  scs_comed: [25, 35, 45]
+  credit_collections_prog: [50, 100]
+
+# OUTPUT DIR
+out_dir: "out"

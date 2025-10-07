@@ -1,0 +1,26 @@
+{{ party.defendant_name }}
+{{ party.defendant_addr }}
+{% if party.email and party.email != "[optional]" %}Email: {{ party.email }}
+{% endif %}{% if party.phone and party.phone != "[optional]" %}Phone: {{ party.phone }}
+{% endif %}
+
+Brief Declaration of Financial Hardship
+
+I, {{ party.defendant_name }}, submit this declaration to summarize the circumstances impacting my current
+ability to pay outstanding consumer obligations in full. In February 2024, I experienced a job loss that
+significantly reduced household income. Since that time, I have taken on primary caregiving responsibilities
+for a parent undergoing cancer treatment, which has further limited my availability to work and required
+additional out-of-pocket expenses.
+
+In September 2025, I also faced unexpected housing remediation costs to address urgent health and safety
+issues. These combined events depleted emergency reserves and left me with limited disposable income.
+
+This declaration is provided in good faith to document my hardship, support reasonable settlement
+discussions, and explain why I am unable to offer more than the structured settlement percentages included
+with my correspondence. I certify that the statements above are true and correct to the best of my
+knowledge.
+
+Dated: {{ now if now is defined else date }}
+
+____________________________________
+{{ party.defendant_name }}

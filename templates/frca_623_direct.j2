@@ -1,0 +1,28 @@
+{{ party.defendant_name }}
+{{ party.defendant_addr }}
+{% if party.email and party.email != "[optional]" %}Email: {{ party.email }}
+{% endif %}{% if party.phone and party.phone != "[optional]" %}Phone: {{ party.phone }}
+{% endif %}
+{{ date }}
+
+Via Certified Mail
+{{ to_address }}
+
+Subject: Direct Dispute under FCRA §623 – Reconcile / Delete Duplicative Tradeline
+
+To the Chase Executive Office:
+
+I am submitting a direct dispute regarding conflicting tradeline data associated with my Chase account
+ending *4155 and a separate JPMCB tradeline ending *4978. Please identify the accurate live account of
+record and reconcile the reporting so only one complete and accurate tradeline remains.
+
+If the *4155 account is the operative record, please delete the *4978 tradeline and update all limits, high
+balances, and Date of First Delinquency values accordingly. Kindly provide written confirmation of the steps
+taken and the records reviewed in resolving this dispute.
+
+Thank you for your attention to this matter. I look forward to your written confirmation within the
+statutory timeframe.
+
+Sincerely,
+
+{{ party.defendant_name }}

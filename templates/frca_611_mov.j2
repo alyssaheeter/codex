@@ -1,0 +1,30 @@
+{{ party.defendant_name }}
+{{ party.defendant_addr }}
+{% if party.email and party.email != "[optional]" %}Email: {{ party.email }}
+{% endif %}{% if party.phone and party.phone != "[optional]" %}Phone: {{ party.phone }}
+{% endif %}
+{{ date }}
+
+Via Certified Mail
+{{ to_address }}
+
+Subject: FCRA §611 Dispute & Method of Verification Request – JPMCB *4978 vs. Chase 4155
+
+Dear Disputes Department:
+
+I am formally disputing the accuracy of the JPMCB *4978 tradeline reporting on my credit file. The entry
+shows a credit limit of ${{ fmt_money(facts.jpmcb_4978_cl) }}, a high balance of ${{ fmt_money(facts.jpmcb_4978_high) }}, and a Date of
+First Delinquency of {{ facts.jpmcb_4978_dofd }}. These details are inconsistent with the Chase 4155 account that
+is the subject of current litigation (credit limit ${{ fmt_money(facts.chase_4155_cl) }}), indicating the tradeline may be a
+duplicate or fragment of the same obligation.
+
+Please conduct a reasonable reinvestigation, delete or consolidate any duplicative reporting, and provide
+a detailed Method of Verification. The MOV should identify the furnisher, the individual or department
+contacted, and the specific account records relied upon for verification.
+
+I appreciate your prompt attention to this dispute and request a written response within the 30-day
+statutory period. Please mail your findings to the address above.
+
+Sincerely,
+
+{{ party.defendant_name }}
