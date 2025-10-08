@@ -17,6 +17,7 @@ def jenv():
         autoescape=select_autoescape()
     )
     env.globals["fmt_money"] = fmt_money
+    env.globals["pct_slug"] = pct_slug
     return env
 
 def write_docx(text, outpath):
@@ -30,6 +31,9 @@ def fmt_money(x): return f"{x:,.2f}"
 
 def compute_amount(balance, pct):
     return round(balance * pct / 100.0, 2)
+
+def pct_slug(pct):
+    return str(pct).replace(".", "_")
 
 @click.group()
 def cli():
@@ -51,7 +55,7 @@ def make_calendar(cfg):
     add("opp_msj", dd["oppose_msj"], "File Opposition to MSJ + Motion to Strike")
     add("mov_623", dd["mov_bureaus_623"], "Mail §611 MOV to EQ/TU/EX + §623 to Chase")
     add("fdcpas", dd["fdcpas"], "Mail FDCPA validations to SCS and Credit Collections")
-    add("rebuild", dd["rebuild_day45"], "Day 45: Rebuild wave kickoff")
+    add("rebuild", dd["rebuild_day45"], "Day 45: Rebuild plan kickoff")
     out = os.path.join(plan["out_dir"], "deadlines.ics")
     os.makedirs(plan["out_dir"], exist_ok=True)
     with open(out, "w", encoding="utf-8") as f: f.writelines(cal.serialize_iter())
@@ -93,15 +97,15 @@ def letters(cfg):
     out_dir = plan["out_dir"]; os.makedirs(out_dir, exist_ok=True)
 
     # Settlement – Chase 4155
-    for i, pct in enumerate(plan["offers"]["chase_4155"], start=1):
+    for pct in plan["offers"]["chase_4155"]:
         ctx = {
             **plan, "date": today, "name": "Chase 4155",
             "balance": fmt_money(facts["chase_balance_4155"]),
             "pct": pct, "amount": fmt_money(compute_amount(facts["chase_balance_4155"], pct)),
-            "to_address": plan["mailing"]["plaintiff_counsel"], "wave": i
+            "to_address": plan["mailing"]["plaintiff_counsel"]
         }
         text = env.get_template("settlement_offer.j2").render(**ctx)
-        fn = f"Chase_4155_Wave{i}_Settlement_Offer_{today}.docx"
+        fn = f"Chase_4155_Settlement_Offer_{pct_slug(pct)}pct_{today}.docx"
         write_docx(text, os.path.join(out_dir, fn))
 
     # §611 MOV to bureaus (duplicate JPMCB *4978)
@@ -120,7 +124,7 @@ def letters(cfg):
 
     # FDCPA validations + PFD ladders
     # SCS (ComEd)
-    for i, pct in enumerate(plan["offers"]["scs_comed"], start=1):
+    for pct in plan["offers"]["scs_comed"]:
         ctx = {
             **plan, "date": today, "pct": pct,
             "amount": fmt_money(compute_amount(facts["scs_comed_balance"], pct)),
@@ -128,11 +132,11 @@ def letters(cfg):
             "account_reference": f"Southwest Credit Systems – ComEd Balance ${fmt_money(facts['scs_comed_balance'])}"
         }
         text = env.get_template("fdCPA_1692g_pfd.j2").render(**ctx)
-        fn = f"SCS_ComEd_Validation_PFD_{today}_Wave{i}.docx"
+        fn = f"SCS_ComEd_Validation_PFD_{pct_slug(pct)}pct_{today}.docx"
         write_docx(text, os.path.join(out_dir, fn))
 
     # Credit Collections (Progressive)
-    for i, pct in enumerate(plan["offers"]["credit_collections_prog"], start=1):
+    for pct in plan["offers"]["credit_collections_prog"]:
         ctx = {
             **plan, "date": today, "pct": pct,
             "amount": fmt_money(compute_amount(facts["credit_collections_prog_balance"], pct)),
@@ -140,7 +144,7 @@ def letters(cfg):
             "account_reference": f"Credit Collection Services – Progressive Balance ${fmt_money(facts['credit_collections_prog_balance'])}"
         }
         text = env.get_template("fdCPA_1692g_pfd.j2").render(**ctx)
-        fn = f"CreditCollections_Progressive_Validation_PFD_{today}_Wave{i}.docx"
+        fn = f"CreditCollections_Progressive_Validation_PFD_{pct_slug(pct)}pct_{today}.docx"
         write_docx(text, os.path.join(out_dir, fn))
 
     # AmEx + BofA offers
@@ -148,15 +152,15 @@ def letters(cfg):
         ("Amex_15443", "amex_balance", plan["offers"]["amex"]),
         ("BofA", "bofa_balance", plan["offers"]["bofa"])
     ]:
-        for i, pct in enumerate(ladder, start=1):
+        for pct in ladder:
             ctx = {
                 **plan, "date": today, "name": name,
                 "balance": fmt_money(facts[bal_key]),
                 "pct": pct, "amount": fmt_money(compute_amount(facts[bal_key], pct)),
-                "to_address": "[Creditor address here]", "wave": i
+                "to_address": "[Creditor address here]"
             }
             text = env.get_template("settlement_offer.j2").render(**ctx)
-            fn = f"{name}_Wave{i}_Settlement_Offer_{today}.docx"
+            fn = f"{name}_Settlement_Offer_{pct_slug(pct)}pct_{today}.docx"
             write_docx(text, os.path.join(out_dir, fn))
 
     click.echo("letters OK")
@@ -172,13 +176,13 @@ def scaffold(cfg):
     targets = [
         f"{court}_Opposition_to_MSJ.docx",
         f"{court}_Motion_to_Strike_Affidavit.docx",
-        f"Chase_4155_Wave1_Settlement_Offer_{today}.docx",
+        f"Chase_4155_Settlement_Offer_{pct_slug(plan['offers']['chase_4155'][0])}pct_{today}.docx",
         f"Bureaus_§611_MOV_JPMCB4978_{today}.docx",
         f"Chase_§623_DirectDispute_DuplicateTradeline_{today}.docx",
-        f"SCS_ComEd_Validation_PFD_{today}.docx",
-        f"CreditCollections_Validation_PFD_Progressive_{today}.docx",
-        f"Amex_15443_Wave1_Settlement_Offer_{today}.docx",
-        f"BofA_Itemization_and_Settlement_Wave1_{today}.docx",
+        f"SCS_ComEd_Validation_PFD_{pct_slug(plan['offers']['scs_comed'][0])}pct_{today}.docx",
+        f"CreditCollections_Progressive_Validation_PFD_{pct_slug(plan['offers']['credit_collections_prog'][0])}pct_{today}.docx",
+        f"Amex_15443_Settlement_Offer_{pct_slug(plan['offers']['amex'][0])}pct_{today}.docx",
+        f"BofA_Settlement_Offer_{pct_slug(plan['offers']['bofa'][0])}pct_{today}.docx",
     ]
     for t in targets:
         p = os.path.join(out, t)
