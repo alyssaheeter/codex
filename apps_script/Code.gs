@@ -58,64 +58,64 @@ const PLAN = {
 };
 
 const TEMPLATES = {
-  opposition_msj: `IN THE {{ court.jurisdiction | upper }} {{ court.court_name | upper }}
-CAUSE NO. {{ court.cause_no }}
+  opposition_msj: (ctx) => `IN THE ${ctx.court.jurisdiction.toUpperCase()} ${ctx.court.court_name.toUpperCase()}
+CAUSE NO. ${ctx.court.cause_no}
 
 JPMORGAN CHASE BANK, N.A.                )
       Plaintiff,                          )
 v.                                        )
-{{ party.defendant_name | upper }},         )
+${ctx.party.defendant_name.toUpperCase()},         )
       Defendant.                          )
 
 DEFENDANT’S OPPOSITION TO PLAINTIFF’S MOTION FOR SUMMARY JUDGMENT
 
 Defendant opposes Summary Judgment. A genuine dispute of material fact exists because
-Plaintiff’s own designated materials conflict on the “last payment” (Memo asserts \${{ facts.chase_last_payment_memo.amount }}
-on {{ facts.chase_last_payment_memo.date }}; Affidavit swears \${{ facts.chase_last_payment_affidavit.amount }} on {{ facts.chase_last_payment_affidavit.date }}),
+Plaintiff’s own designated materials conflict on the “last payment” (Memo asserts \$${ctx.facts.chase_last_payment_memo.amount}
+on ${ctx.facts.chase_last_payment_memo.date}; Affidavit swears \$${ctx.facts.chase_last_payment_affidavit.amount} on ${ctx.facts.chase_last_payment_affidavit.date}),
 defeating account-stated as a matter of law. Plaintiff also failed to itemize the balance and to produce the full run of
 statements despite designating “Periodic Billing Statements (pp. 1–49).”
 
 Requested relief: deny Summary Judgment; alternatively, defer under Rule 56 to compel complete statements and
 itemization; set for trial.
 
-Dated: {{ now }}
+Dated: ${ctx.now}
 
-{{ party.defendant_name }}
-{{ party.defendant_addr }}`,
-  motion_strike_affidavit: `… MOTION TO STRIKE OR DISREGARD AFFIDAVIT PORTIONS …
+${ctx.party.defendant_name}
+${ctx.party.defendant_addr}`,
+  motion_strike_affidavit: () => `… MOTION TO STRIKE OR DISREGARD AFFIDAVIT PORTIONS …
 
 Grounds: (1) internal contradiction on last-payment date/amount; (2) hearsay and lack of proper foundation for business
 records; (3) no itemization of fees/interest from charge-off to present; (4) absence of complete monthly statements.
 
 Relief: strike contradictory paragraphs; disregard balance assertions lacking itemization; order production of pp. 1–49 statements.`,
-  settlement_offer: `{{ date }}
+  settlement_offer: (ctx) => `${ctx.date}
 
 Via Email & Certified Mail
-{{ to_address }}
+${ctx.to_address}
 
-Re: Settlement Offer (No admission) – {{ name }} – Balance \${{ balance }}
+Re: Settlement Offer (No admission) – ${ctx.name} – Balance \$${ctx.balance}
 
-I can tender {{ pct }}% (\${{ amount }}) as a lump-sum for (i) dismissal with prejudice (if in suit),
+I can tender ${ctx.pct}% (\$${ctx.amount}) as a lump-sum for (i) dismissal with prejudice (if in suit),
 (ii) each side bears fees/costs, (iii) no post–charge-off interest or fees, (iv) furnish “settled” within 30 days,
 (v) no resale of remainder; written agreement required before any payment.
 
 Hardship summary attached.
 
 Sincerely,
-{{ party.defendant_name }}`,
-  frca_611_mov: `Re: FCRA §611 Dispute & Method of Verification Request – Duplicate/Fragment JPMCB *4978 vs. Chase 4155
+${ctx.party.defendant_name}`,
+  frca_611_mov: (ctx) => `Re: FCRA §611 Dispute & Method of Verification Request – Duplicate/Fragment JPMCB *4978 vs. Chase 4155
 
-I dispute JPMCB *4978 as inaccurate/duplicative. *4978 shows CL \${{ facts.jpmcb_4978_cl }}, high \${{ facts.jpmcb_4978_high }},
-DOFD {{ facts.jpmcb_4978_dofd }}, while the Chase/4155 lawsuit reflects a different product with CL \${{ facts.chase_4155_cl }}.
+I dispute JPMCB *4978 as inaccurate/duplicative. *4978 shows CL \$${ctx.facts.jpmcb_4978_cl}, high \$${ctx.facts.jpmcb_4978_high},
+DOFD ${ctx.facts.jpmcb_4978_dofd}, while the Chase/4155 lawsuit reflects a different product with CL \$${ctx.facts.chase_4155_cl}.
 Delete or consolidate and provide MOV identifying the furnisher, contact, and specific records relied upon.`,
-  frca_623_direct: `Re: Direct Dispute under FCRA §623 – Reconcile / Delete Duplicative Tradeline
+  frca_623_direct: () => `Re: Direct Dispute under FCRA §623 – Reconcile / Delete Duplicative Tradeline
 
 Identify the correct tradeline (4155 vs. *4978). If 4155 is the live account of record, delete *4978 and correct limits/high credit/DOFD.`,
-  fdCPA_1692g_pfd: `Re: Validation Request under 15 U.S.C. §1692g and Pay-for-Delete Negotiation
+  fdCPA_1692g_pfd: (ctx) => `Re: Validation Request under 15 U.S.C. §1692g and Pay-for-Delete Negotiation
 
 Please provide: (1) original contract/authority, (2) full itemization, (3) proof of assignment, (4) DOFD reported to CRAs, (5) collector license.
-Cease phone contact. Upon validation, I’m prepared to resolve on a written Pay-for-Delete basis at {{ pct }}% (\${{ amount }}).`,
-  hardship_declaration: `Brief Declaration of Hardship
+Cease phone contact. Upon validation, I’m prepared to resolve on a written Pay-for-Delete basis at ${ctx.pct}% (\$${ctx.amount}).`,
+  hardship_declaration: () => `Brief Declaration of Hardship
 
 I experienced job loss (Feb 2024), caregiving for a parent with cancer, and unexpected housing remediation costs (Sept 2025).
 This declaration is submitted solely to explain current inability to pay in full and to support reasonable settlement.`,
@@ -347,44 +347,7 @@ function renderTemplate(name, ctx) {
   if (!template) {
     throw new Error(`Missing template: ${name}`);
   }
-  return template.replace(/{{\s*([^}]+)\s*}}/g, (match, expr) => {
-    return resolveExpression(expr.trim(), ctx);
-  });
-}
-
-function resolveExpression(expr, ctx) {
-  const [path, ...filters] = expr.split('|').map((part) => part.trim());
-  let value = resolvePath(path, ctx);
-  filters.forEach((filter) => {
-    value = applyFilter(value, filter);
-  });
-  return value == null ? '' : value;
-}
-
-function resolvePath(path, ctx) {
-  if (path === 'now') {
-    return formatDate(new Date());
-  }
-  return path.split('.').reduce((acc, key) => {
-    if (acc == null) {
-      return acc;
-    }
-    return acc[key];
-  }, ctx);
-}
-
-function applyFilter(value, filter) {
-  if (value == null) {
-    return value;
-  }
-  switch (filter) {
-    case 'upper':
-      return String(value).toUpperCase();
-    case 'money':
-      return formatMoney(value);
-    default:
-      return value;
-  }
+  return template(ctx);
 }
 
 function formatMoney(amount) {
