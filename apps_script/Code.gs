@@ -60,6 +60,18 @@ const PLAN = {
 const DEFAULT_FONT_FAMILY = 'Calibri';
 const DEFAULT_FONT_SIZE = 12;
 
+const ALIGNMENT_MAP = (function () {
+  if (typeof DocumentApp !== 'undefined' && DocumentApp.ParagraphAlignment) {
+    return {
+      LEFT: DocumentApp.ParagraphAlignment.LEFT,
+      RIGHT: DocumentApp.ParagraphAlignment.RIGHT,
+      CENTER: DocumentApp.ParagraphAlignment.CENTER,
+      JUSTIFY: DocumentApp.ParagraphAlignment.JUSTIFY,
+    };
+  }
+  return {};
+})();
+
 const TEMPLATES = {
   opposition_msj: (ctx) => ({
     heading: 'DEFENDANT’S OPPOSITION TO PLAINTIFF’S MOTION FOR SUMMARY JUDGMENT',
@@ -670,7 +682,8 @@ function applyParagraphStyles(paragraph, styles) {
     paragraph.setUnderline(styles.underline);
   }
   if (styles.alignment) {
-    const alignment = DocumentApp.ParagraphAlignment[styles.alignment] || null;
+    const alignmentKey = String(styles.alignment).toUpperCase();
+    const alignment = ALIGNMENT_MAP[alignmentKey];
     if (alignment) {
       paragraph.setAlignment(alignment);
     }
