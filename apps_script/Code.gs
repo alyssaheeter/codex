@@ -70,8 +70,8 @@ v.                                        )
 DEFENDANT’S OPPOSITION TO PLAINTIFF’S MOTION FOR SUMMARY JUDGMENT
 
 Defendant opposes Summary Judgment. A genuine dispute of material fact exists because
-Plaintiff’s own designated materials conflict on the “last payment” (Memo asserts ${{ facts.chase_last_payment_memo.amount }}
-on {{ facts.chase_last_payment_memo.date }}; Affidavit swears ${{ facts.chase_last_payment_affidavit.amount }} on {{ facts.chase_last_payment_affidavit.date }}),
+Plaintiff’s own designated materials conflict on the “last payment” (Memo asserts \${{ facts.chase_last_payment_memo.amount }}
+on {{ facts.chase_last_payment_memo.date }}; Affidavit swears \${{ facts.chase_last_payment_affidavit.amount }} on {{ facts.chase_last_payment_affidavit.date }}),
 defeating account-stated as a matter of law. Plaintiff also failed to itemize the balance and to produce the full run of
 statements despite designating “Periodic Billing Statements (pp. 1–49).”
 
@@ -93,9 +93,9 @@ Relief: strike contradictory paragraphs; disregard balance assertions lacking it
 Via Email & Certified Mail
 {{ to_address }}
 
-Re: Settlement Offer (No admission) – {{ name }} – Balance ${{ balance }}
+Re: Settlement Offer (No admission) – {{ name }} – Balance \${{ balance }}
 
-I can tender {{ pct }}% (${{ amount }}) as a lump-sum for (i) dismissal with prejudice (if in suit),
+I can tender {{ pct }}% (\${{ amount }}) as a lump-sum for (i) dismissal with prejudice (if in suit),
 (ii) each side bears fees/costs, (iii) no post–charge-off interest or fees, (iv) furnish “settled” within 30 days,
 (v) no resale of remainder; written agreement required before any payment.
 
@@ -105,8 +105,8 @@ Sincerely,
 {{ party.defendant_name }}`,
   frca_611_mov: `Re: FCRA §611 Dispute & Method of Verification Request – Duplicate/Fragment JPMCB *4978 vs. Chase 4155
 
-I dispute JPMCB *4978 as inaccurate/duplicative. *4978 shows CL ${{ facts.jpmcb_4978_cl }}, high ${{ facts.jpmcb_4978_high }},
-DOFD {{ facts.jpmcb_4978_dofd }}, while the Chase/4155 lawsuit reflects a different product with CL ${{ facts.chase_4155_cl }}.
+I dispute JPMCB *4978 as inaccurate/duplicative. *4978 shows CL \${{ facts.jpmcb_4978_cl }}, high \${{ facts.jpmcb_4978_high }},
+DOFD {{ facts.jpmcb_4978_dofd }}, while the Chase/4155 lawsuit reflects a different product with CL \${{ facts.chase_4155_cl }}.
 Delete or consolidate and provide MOV identifying the furnisher, contact, and specific records relied upon.`,
   frca_623_direct: `Re: Direct Dispute under FCRA §623 – Reconcile / Delete Duplicative Tradeline
 
@@ -114,7 +114,7 @@ Identify the correct tradeline (4155 vs. *4978). If 4155 is the live account of 
   fdCPA_1692g_pfd: `Re: Validation Request under 15 U.S.C. §1692g and Pay-for-Delete Negotiation
 
 Please provide: (1) original contract/authority, (2) full itemization, (3) proof of assignment, (4) DOFD reported to CRAs, (5) collector license.
-Cease phone contact. Upon validation, I’m prepared to resolve on a written Pay-for-Delete basis at {{ pct }}% (${{ amount }}).`,
+Cease phone contact. Upon validation, I’m prepared to resolve on a written Pay-for-Delete basis at {{ pct }}% (\${{ amount }}).`,
   hardship_declaration: `Brief Declaration of Hardship
 
 I experienced job loss (Feb 2024), caregiving for a parent with cancer, and unexpected housing remediation costs (Sept 2025).
