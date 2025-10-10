@@ -60,17 +60,10 @@ const PLAN = {
 const DEFAULT_FONT_FAMILY = 'Calibri';
 const DEFAULT_FONT_SIZE = 12;
 
-const ALIGNMENT_MAP = (function () {
-  if (typeof DocumentApp !== 'undefined' && DocumentApp.HorizontalAlignment) {
-    return {
-      LEFT: DocumentApp.HorizontalAlignment.LEFT,
-      RIGHT: DocumentApp.HorizontalAlignment.RIGHT,
-      CENTER: DocumentApp.HorizontalAlignment.CENTER,
-      JUSTIFY: DocumentApp.HorizontalAlignment.JUSTIFY,
-    };
-  }
-  return {};
-})();
+const HORIZONTAL_ALIGNMENT =
+  typeof DocumentApp !== 'undefined' && DocumentApp.HorizontalAlignment
+    ? DocumentApp.HorizontalAlignment
+    : null;
 
 const TEMPLATES = {
   opposition_msj: (ctx) => ({
@@ -681,9 +674,9 @@ function applyParagraphStyles(paragraph, styles) {
   if (styles.underline !== undefined) {
     paragraph.setUnderline(styles.underline);
   }
-  if (styles.alignment) {
+  if (styles.alignment && HORIZONTAL_ALIGNMENT) {
     const alignmentKey = String(styles.alignment).toUpperCase();
-    const alignment = ALIGNMENT_MAP[alignmentKey];
+    const alignment = HORIZONTAL_ALIGNMENT[alignmentKey];
     if (alignment) {
       paragraph.setAlignment(alignment);
     }
