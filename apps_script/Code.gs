@@ -61,12 +61,12 @@ const DEFAULT_FONT_FAMILY = 'Calibri';
 const DEFAULT_FONT_SIZE = 12;
 
 const ALIGNMENT_MAP = (function () {
-  if (typeof DocumentApp !== 'undefined' && DocumentApp.ParagraphAlignment) {
+  if (typeof DocumentApp !== 'undefined' && DocumentApp.HorizontalAlignment) {
     return {
-      LEFT: DocumentApp.ParagraphAlignment.LEFT,
-      RIGHT: DocumentApp.ParagraphAlignment.RIGHT,
-      CENTER: DocumentApp.ParagraphAlignment.CENTER,
-      JUSTIFY: DocumentApp.ParagraphAlignment.JUSTIFY,
+      LEFT: DocumentApp.HorizontalAlignment.LEFT,
+      RIGHT: DocumentApp.HorizontalAlignment.RIGHT,
+      CENTER: DocumentApp.HorizontalAlignment.CENTER,
+      JUSTIFY: DocumentApp.HorizontalAlignment.JUSTIFY,
     };
   }
   return {};
